@@ -1,11 +1,12 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { JSDOM } from "jsdom";
+import { SearchResponse } from "../../types/searchResponse";
 
 // przyjmuje tekst do szukania i zwraca linki do zasobów
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<unknown>
+  res: NextApiResponse<SearchResponse>
 ) {
   const searchPhrase = (req.query.searchPhrase ?? "wojna") as string;
 

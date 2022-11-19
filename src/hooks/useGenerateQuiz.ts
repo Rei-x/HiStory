@@ -1,6 +1,5 @@
-import { CreateCompletionResponse } from "openai";
 import { useState } from "react";
-import useLazyQuery from "./useLazyQuery";
+import { QuizData } from "../types/quizData";
 
 export const useGenerateQuiz = ({
   baseText,
@@ -9,9 +8,7 @@ export const useGenerateQuiz = ({
   baseText: string;
   numberOfQuestions: number;
 }) => {
-  const [data, setData] = useState<CreateCompletionResponse | undefined>(
-    undefined
-  );
+  const [data, setData] = useState<QuizData | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
 
   const fetchData = async () => {

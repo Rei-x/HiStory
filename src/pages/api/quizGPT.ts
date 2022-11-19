@@ -12,10 +12,10 @@ type Data =
 
 const convertNumberToText = (number: 1 | 2 | 3 | 4) => {
   const numbers = {
-    1: "jedno",
-    2: "dwa",
-    3: "trzy",
-    4: "cztery",
+    1: "jedno pytanie",
+    2: "dwa pytania",
+    3: "trzy pytania",
+    4: "cztery pytania",
   };
 
   return numbers[number];
@@ -31,13 +31,13 @@ const createPrompt = ({
   return `
   Wygeneruj quiz na podstawie tekstu, który ma dokładnie ${convertNumberToText(
     numberOfQuestions
-  )} pytania i każde ma po 4 odpowiedzi. Na końcu każdego pytania wypisz poprawną odpowiedź.
+  )} i każde ma po 4 odpowiedzi. Na końcu każdego pytania wypisz poprawną odpowiedź.
   ---
-  Quiz jest w formacie JSON. 
-{ questions: [{
-question: "Pytanie",
-answers: ["odpowiedź a", "odpowiedź b", "odpowiedź c", "odpowiedź d"],
-correctAnswer: "odpowiedź a",
+  Quiz jest w 100% w  formacie JSON. 
+{ "questions": [{
+"question": "Pytanie",
+"answers": ["odpowiedź a", "odpowiedź b", "odpowiedź c", "odpowiedź d"],
+"correctAnswer": "odpowiedź a",
 }]
   ---
   ${baseText}
@@ -87,34 +87,37 @@ export default async function handler(
     }),
     stop: "---",
     temperature: 0.1,
-    max_tokens: 1000,
+    max_tokens: 2048,
   });
 
   // const completion = {
   //   data: {
-  //     id: "cmpl-6EJGVHQPqshGYwK1VnxMWhwsKDvE4",
+  //     id: "cmpl-6EJdqZyQit3XhkXWPR7M9Y3vBfekK",
   //     object: "text_completion",
-  //     created: 1668868667,
+  //     created: 1668870114,
   //     model: "text-davinci-002",
   //     choices: [
   //       {
-  //         text: "\n 1. Co było ideą przewodnią przyświecającą autorom wystawy Akcja AB – Katyń?\n a) ukazanie podobnych działań podjętych w tym samym czasie przez obydwu agresorów i zbrodniczych okupantów Rzeczypospolitej Polskiej: nazistowskie Niemcy i Rosję radziecką\n b) pokazanie, że zbrodnie Niemców były gorsze niż zbrodnie Sowietów\n c) pokazanie, że zbrodnie Sowietów były gorsze niż zbrodnie Niemców\n d) pokazanie, że zbrodnie Niemców i Sowietów były takie same",
+  //         text: '\t"questions": [\n \t\t{\n \t\t\t"question": "Ideą przewodnią przyświecającą autorom wystawy Akcja AB – Katyń było ukazanie podobnych działań podjętych w tym samym czasie przez obydwu agresorów i zbrodniczych okupantów Rzeczypospolitej Polskiej:",\n \t\t\t"answers": [\n \t\t\t\t"nazistowskie Niemcy i Rosję radziecką.",\n \t\t\t\t"nazistowskie Niemcy i Rosję radziecką oraz współpracy okupantów.",\n \t\t\t\t"nazistowskie Niemcy i Rosję radziecką oraz polityce okupacyjnej.",\n \t\t\t\t"nazistowskie Niemcy i Rosję radziecką oraz polityce okupacyjnej i współpracy okupantów."\n \t\t\t],\n \t\t\t"correctAnswer": "nazistowskie Niemcy i Rosję radziecką."\n \t\t}\n \t]\n }',
   //         index: 0,
   //         logprobs: null,
   //         finish_reason: "stop",
   //       },
   //     ],
-  //     usage: {
-  //       prompt_tokens: 946,
-  //       completion_tokens: 247,
-  //       total_tokens: 1193,
-  //     },
+  //     usage: { prompt_tokens: 988, completion_tokens: 337, total_tokens: 1325 },
   //   },
   // };
+
+  console.log(completion.data);
+
+  const choice = JSON.parse(
+    "{" +
+      completion.data.choices[0].text?.replaceAll("\n", "").replaceAll("\t", "")
+  );
 
   // const quizText  = completion.data.choices[0];
 
   // const question =
 
-  return res.status(200).json({ data: completion.data });
+  return res.status(200).json({ ...choice });
 }

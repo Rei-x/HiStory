@@ -1,4 +1,11 @@
-import { Button, Code, FormLabel, Heading, Input } from "@chakra-ui/react";
+import {
+  Button,
+  Code,
+  Container,
+  FormLabel,
+  Heading,
+  Input,
+} from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useGenerateQuiz } from "../hooks/useGenerateQuiz";
 
@@ -10,7 +17,7 @@ const Quiz = () => {
     numberOfQuestions,
   });
   return (
-    <div>
+    <Container maxW="container.lg" pt={8}>
       <Heading>Wygeneruj quiz</Heading>
       <Button
         onClick={() => {
@@ -40,10 +47,23 @@ const Quiz = () => {
         />
       </FormLabel>
       <Code>{JSON.stringify(data)}</Code>
-
-      <div>{baseText}</div>
-      <div>{numberOfQuestions}</div>
-    </div>
+      {data?.questions ? (
+        <div>
+          <ol>
+            {data.questions.map((question) => (
+              <li key={question.question}>
+                {question.question}
+                <ul>
+                  {question.answers.map((answer) => (
+                    <li key={answer}>{answer}</li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ol>
+        </div>
+      ) : null}
+    </Container>
   );
 };
 
