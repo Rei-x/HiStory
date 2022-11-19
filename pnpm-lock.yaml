@@ -6,6 +6,7 @@ specifiers:
   '@emotion/react': ^11.10.5
   '@emotion/styled': ^11.10.5
   '@types/jsdom': ^20.0.1
+  '@types/lodash': ^4.14.189
   '@types/node': 18.11.9
   '@types/react': 18.0.25
   '@types/react-dom': 18.0.9
@@ -13,8 +14,9 @@ specifiers:
   eslint-config-next: 13.0.4
   framer-motion: ^7.6.7
   jsdom: ^20.0.2
-  nanoid: ^4.0.0
   jsonrepair: ^2.2.1
+  lodash: ^4.17.21
+  nanoid: ^4.0.0
   next: 13.0.4
   openai: ^3.1.0
   pdf-text-extract: ^1.5.0
@@ -28,6 +30,7 @@ dependencies:
   '@chakra-ui/react': 2.4.1_fqfjrcf4r5ejjaxw4ez4knwbra
   '@emotion/react': 11.10.5_cuziicjcvwawlf5iuhzacuhqcy
   '@emotion/styled': 11.10.5_hmjty4frusbltjhl3xd7udcm2y
+  '@types/lodash': 4.14.189
   '@types/node': 18.11.9
   '@types/react': 18.0.25
   '@types/react-dom': 18.0.9
@@ -35,8 +38,9 @@ dependencies:
   eslint-config-next: 13.0.4_hsf322ms6xhhd4b5ne6lb74y4a
   framer-motion: 7.6.7_biqbaboplfbrettd7655fr4n2y
   jsdom: 20.0.2
-  nanoid: 4.0.0
   jsonrepair: 2.2.1
+  lodash: 4.17.21
+  nanoid: 4.0.0
   next: 13.0.4_mqvh5p7ejg4taogoj6tpk3gd5a
   openai: 3.1.0
   pdf-text-extract: 1.5.0
@@ -3385,6 +3389,10 @@ packages:
 
   /lodash.mergewith/4.6.2:
     resolution: {integrity: sha512-GK3g5RPZWTRSeLSpgP8Xhra+pnjBC56q9FZYe1d5RN3TJ35dbkGy3YqBSMbyCrlbi+CM9Z3Jk5yTL7RCsqboyQ==}
+    dev: false
+
+  /lodash/4.17.21:
+    resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
     dev: false
 
   /loose-envify/1.4.0:

@@ -3,20 +3,25 @@ import {
   Center,
   Code,
   Container,
+  FormControl,
+  FormLabel,
   Heading,
+  Input,
   List,
   ListItem,
   OrderedList,
+  useToast,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Layout } from "../../components/Layout";
 import { Question } from "../../components/Question";
 import { useGenerateQuiz } from "../../hooks/useGenerateQuiz";
 import { useTextFromResource } from "../../hooks/useTextFromResource";
+import set from "lodash/set";
 
 const Quiz = () => {
-  const { query } = useRouter();
+  const { query, ...router } = useRouter();
   const baseText = useTextFromResource(query.url as string);
   const { fetchData, data, loading } = useGenerateQuiz({
     baseText: baseText.data?.data ?? "",
@@ -34,27 +39,67 @@ const Quiz = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [baseText.data?.data, query.numberOfQuestions]);
 
+  const toast = useToast();
+  const [title, setTitle] = useState("");
+
   return (
     <Layout>
       <Heading>Quiz</Heading>
+      <FormControl>
+        <FormLabel>Tytuł quizu</FormLabel>
+        <Input
+          value={title}
+          onChange={(e) => {
+            setTitle(e.target.value);
+          }}
+        />
+      </FormControl>
       <form
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
-          const questions = []
-          console.log(e.currentTarget);
-          Object.entries((e.target as any).elements).forEach(
-            ([name, element]) => {
-              
-              console.log(name, element.name);
+          const questions = {};
+
+          Object.values((e.target as any).elements).forEach((element) => {
+            if (element.name === "") {
+              return;
             }
-          );
+            set(questions, element.name, element.value);
+          });
+
+          fetch("/api/quizes", {
+            method: "POST",
+            body: JSON.stringify({
+              title,
+              questions: questions.questions,
+              topicId: query.topicId as string,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            .then(() => {
+              toast({
+                title: "Sukces",
+                status: "success",
+                description: "Udało się zapisać quiz!",
+              });
+
+              router.push("/topics");
+            })
+            .catch(() => {
+              toast({
+                title: "Błąd",
+                status: "error",
+                description: "Nie udało się zapisać quizu :(",
+              });
+            });
         }}
       >
         <OrderedList mt={4} spacing={4}>
           {data?.questions?.map((question, index) => (
             <ListItem key={question.question}>
               <Question
-                questionNumber={index + 1}
+                questionNumber={index}
                 answers={question.answers}
                 question={question.question}
                 correctAnswer={question.correctAnswer}

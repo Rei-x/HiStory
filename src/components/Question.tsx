@@ -26,7 +26,7 @@ export const Question = ({
   return (
     <Stack>
       <Input
-        name={`question${questionNumber}`}
+        name={`questions[${questionNumber}].question`}
         fontSize="lg"
         variant="outline"
         defaultValue={question}
@@ -34,13 +34,13 @@ export const Question = ({
       <VStack rowGap={4} spacing={4} alignItems="flex-start">
         <RadioGroup
           defaultValue={correctAnswer}
-          name={`question${questionNumber}.correctAnswer`}
+          name={`questions[${questionNumber}].correctAnswer`}
         >
           {answers.map((answer, index) => (
             <HStack mt={2} ml={4} key={answer}>
               <Radio value={answer} />
               <Input
-                name={`question${questionNumber}.answer.${index + 1}`}
+                name={`questions[${questionNumber}].answer[${index}]`}
                 variant="outline"
                 defaultValue={answer}
               />

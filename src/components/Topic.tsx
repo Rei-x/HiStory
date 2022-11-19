@@ -1,4 +1,3 @@
-import NextLink from "next/link";
 import {
   Heading,
   AccordionButton,
@@ -11,9 +10,11 @@ import {
   List,
   ListItem,
   Button,
+  Link,
 } from "@chakra-ui/react";
 import { useQuiz } from "../hooks/useQuiz";
 import { Topic } from "../pages/api/topics";
+import NextLink from "next/link";
 
 export const TopicAccordion = ({ topic }: { topic: Topic }) => {
   const { data } = useQuiz({ variables: { topicId: topic.id } });
@@ -44,7 +45,9 @@ export const TopicAccordion = ({ topic }: { topic: Topic }) => {
         <List spacing={3}>
           {data?.quizes.map((quiz) => (
             <ListItem key={quiz.id}>
-              {quiz.title} (liczba pytań: {quiz.questions.length})
+              <Link as={NextLink} href="#">
+                {quiz.title} (liczba pytań: {quiz.questions.length})
+              </Link>
             </ListItem>
           ))}
         </List>

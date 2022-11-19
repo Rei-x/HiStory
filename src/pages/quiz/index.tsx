@@ -54,9 +54,13 @@ const Quiz = () => {
               mx="auto"
               colorScheme="blue"
               onClick={() => {
-                router.push("/quiz/nowy", {
+                router.push({
                   pathname: "/quiz/nowy",
-                  query: { url: "https:google", numberOfQuestions: 1 },
+                  query: {
+                    url: resourceUrl,
+                    numberOfQuestions,
+                    topicId,
+                  },
                 });
               }}
             >
@@ -103,7 +107,11 @@ const Quiz = () => {
 
                     router.push({
                       pathname: "/quiz/nowy",
-                      query: { url: resource.url, numberOfQuestions },
+                      query: {
+                        url: resource.url,
+                        numberOfQuestions,
+                        topicId,
+                      },
                     });
                   }}
                   key={resource.url}
