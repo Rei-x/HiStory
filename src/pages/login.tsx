@@ -22,38 +22,51 @@ function Login() {
           <Image src="soldier.png" alt="soldier" />
         </Flex>
 
-        <Stack spacing="10px">
-          <Input
-            placeholder="login"
-            focusBorderColor="#b00909"
-            w="300px"
-            color="#b00909"
-            fontWeight="800"
-            border="2px"
-          ></Input>
-          <Input
-            placeholder="hasło"
-            focusBorderColor="#b00909"
-            w="300px"
-            fontWeight="800"
-            border="2px"
-          ></Input>
+        <Flex justifyContent="space-between">
+          <Stack spacing="10px">
+            <Input
+              placeholder="login"
+              focusBorderColor="#b00909"
+              w="300px"
+              color="#b00909"
+              fontWeight="800"
+              border="2px"
+            ></Input>
+            <Input
+              placeholder="hasło"
+              focusBorderColor="#b00909"
+              w="300px"
+              fontWeight="800"
+              border="2px"
+            ></Input>
 
-          <Button
+            <Button
+              w="300px"
+              background="#b00909"
+              color="white"
+              _hover={{
+                color: "#b00909",
+                background: "white",
+                border: "2px",
+                borderColor: "#b00909",
+              }}
+              _active={{ background: "white", fontSize: "17px" }}
+            >
+              zaloguj
+            </Button>
+          </Stack>
+          <Flex
             w="300px"
-            background="#b00909"
-            color="white"
-            _hover={{
-              color: "#b00909",
-              background: "white",
-              border: "2px",
-              borderColor: "#b00909",
-            }}
-            _active={{ background: "white", fontSize: "17px" }}
+            alignSelf="flex-end"
+            justifySelf="flex-end"
+            flexDir="column"
           >
-            zaloguj
-          </Button>
-        </Stack>
+            <Text opacity="40%" mb="5px" alignSelf="center">
+              Projekt możliwy dzięki
+            </Text>
+            <Image src="ipn.jpg" alt="soldier" />
+          </Flex>
+        </Flex>
       </Stack>
     </div>
   );
