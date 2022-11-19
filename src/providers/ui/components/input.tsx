@@ -3,7 +3,12 @@ import type { ComponentStyleConfig } from "@chakra-ui/react";
 const inputFontSize = "18px";
 
 const Input: ComponentStyleConfig = {
-  baseStyle: {},
+  baseStyle: {
+    field: {
+      borderRadius: "10px",
+      padding: "10px",
+    },
+  },
   sizes: {
     sm: { width: "300px" },
   },

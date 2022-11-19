@@ -17,6 +17,7 @@ import {
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { IPNResource } from "../../components/IPNResource";
+import { Layout } from "../../components/Layout";
 import { useSearch } from "../../hooks/useSearch";
 import { useTextFromResource } from "../../hooks/useTextFromResource";
 import { useTopics } from "../../hooks/useTopics";
@@ -41,7 +42,7 @@ const Quiz = () => {
   const modal = useDisclosure();
 
   return (
-    <>
+    <Layout>
       <Modal size="xl" isOpen={modal.isOpen} onClose={modal.onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -65,7 +66,7 @@ const Quiz = () => {
         </ModalContent>
       </Modal>
       <Container maxW="container.lg" pt={8}>
-        <Heading>Nowy Quiz</Heading>
+        <Heading>Wybierz źródło</Heading>
         <FormLabel mt={4} width="300px">
           Ilość pytań
           <Input
@@ -112,7 +113,7 @@ const Quiz = () => {
             : null}
         </VStack>
       </Container>
-    </>
+    </Layout>
   );
 };
 

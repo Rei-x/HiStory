@@ -1,5 +1,6 @@
 import {
   Button,
+  Center,
   Code,
   Container,
   Heading,
@@ -9,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
+import { Layout } from "../../components/Layout";
 import { Question } from "../../components/Question";
 import { useGenerateQuiz } from "../../hooks/useGenerateQuiz";
 import { useTextFromResource } from "../../hooks/useTextFromResource";
@@ -33,16 +35,40 @@ const Quiz = () => {
   }, [baseText.data?.data, query.numberOfQuestions]);
 
   return (
-    <Container mt={8} maxW="container.lg">
+    <Layout>
       <Heading>Quiz</Heading>
-      <OrderedList>
-        {data?.questions?.map((question) => (
-          <ListItem key={question.question}>
-            <Question answers={question.answers} question={question.question} />
-          </ListItem>
-        ))}
-      </OrderedList>
-    </Container>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          const questions = []
+          console.log(e.currentTarget);
+          Object.entries((e.target as any).elements).forEach(
+            ([name, element]) => {
+              
+              console.log(name, element.name);
+            }
+          );
+        }}
+      >
+        <OrderedList mt={4} spacing={4}>
+          {data?.questions?.map((question, index) => (
+            <ListItem key={question.question}>
+              <Question
+                questionNumber={index + 1}
+                answers={question.answers}
+                question={question.question}
+                correctAnswer={question.correctAnswer}
+              />
+            </ListItem>
+          ))}
+        </OrderedList>
+        <Center>
+          <Button mx="auto" mt={4} type="submit">
+            Zapisz quiz
+          </Button>
+        </Center>
+      </form>
+    </Layout>
   );
 };
 
