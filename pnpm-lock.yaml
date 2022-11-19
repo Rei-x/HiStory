@@ -13,6 +13,7 @@ specifiers:
   eslint-config-next: 13.0.4
   framer-motion: ^7.6.7
   jsdom: ^20.0.2
+  nanoid: ^4.0.0
   next: 13.0.4
   openai: ^3.1.0
   pdf-text-extract: ^1.5.0
@@ -33,6 +34,7 @@ dependencies:
   eslint-config-next: 13.0.4_hsf322ms6xhhd4b5ne6lb74y4a
   framer-motion: 7.6.7_biqbaboplfbrettd7655fr4n2y
   jsdom: 20.0.2
+  nanoid: 4.0.0
   next: 13.0.4_mqvh5p7ejg4taogoj6tpk3gd5a
   openai: 3.1.0
   pdf-text-extract: 1.5.0
@@ -3459,6 +3461,12 @@ packages:
   /nanoid/3.3.4:
     resolution: {integrity: sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
+    hasBin: true
+    dev: false
+
+  /nanoid/4.0.0:
+    resolution: {integrity: sha512-IgBP8piMxe/gf73RTQx7hmnhwz0aaEXYakvqZyE302IXW3HyVNhdNGC+O2MwMAVhLEnvXlvKtGbtJf6wvHihCg==}
+    engines: {node: ^14 || ^16 || >=18}
     hasBin: true
     dev: false
 
