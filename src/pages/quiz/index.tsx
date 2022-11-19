@@ -15,18 +15,29 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IPNResource } from "../../components/IPNResource";
 import { useSearch } from "../../hooks/useSearch";
 import { useTextFromResource } from "../../hooks/useTextFromResource";
+import { useTopics } from "../../hooks/useTopics";
 
 const Quiz = () => {
+  const router = useRouter();
+  const topicId = router.query.topicId as string | undefined;
+  const { data } = useTopics();
+  const topic = data?.topics.find((i) => i.id === topicId);
   const [searchText, setSearchText] = useState("");
+
+  useEffect(() => {
+    if (topicId && topic) {
+      setSearchText(topic.title);
+    }
+  }, [topicId, topic]);
+
   const searchQuery = useSearch(searchText);
   const [numberOfQuestions, setNumberOfQuestions] = useState(1);
   const [resourceUrl, setResourceUrl] = useState("");
   const baseText = useTextFromResource(resourceUrl);
-  const router = useRouter();
   const modal = useDisclosure();
 
   return (
@@ -63,9 +74,7 @@ const Quiz = () => {
             onChange={(e) => {
               const number = parseInt(e.target.value);
 
-              if (number !== NaN) {
-                setNumberOfQuestions(number);
-              }
+              setNumberOfQuestions(number);
             }}
           />
         </FormLabel>
@@ -73,6 +82,7 @@ const Quiz = () => {
           Wyszukaj frazę w bazie IPN.
           <Input
             type="text"
+            value={searchText}
             onChange={(e) => {
               setSearchText(e.target.value);
             }}

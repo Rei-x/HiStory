@@ -16,7 +16,7 @@ export const handler = (req: NextApiRequest, res: NextApiResponse) => {
     dbContent = readFileSync(path).toString() ?? "[]";
   } catch (error) {
     dbContent =
-      '[{"id":"V1StGXR8_Z5jdHi6B-myT","title": "random topic","historicalPeriod": "II wojna światowa"}]';
+      '[{"id":"V1StGXR8_Z5jdHi6B-myT","title": "Normandia","historicalPeriod": "II wojna światowa"}]';
   }
   const db = JSON.parse(dbContent) as Topic[];
 

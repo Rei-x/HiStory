@@ -1,3 +1,4 @@
+import NextLink from "next/link";
 import {
   Heading,
   AccordionButton,
@@ -9,6 +10,7 @@ import {
   Text,
   List,
   ListItem,
+  Button,
 } from "@chakra-ui/react";
 import { useQuiz } from "../hooks/useQuiz";
 import { Topic } from "../pages/api/topics";
@@ -46,6 +48,16 @@ export const TopicAccordion = ({ topic }: { topic: Topic }) => {
             </ListItem>
           ))}
         </List>
+        <Button
+          mx="auto"
+          my={4}
+          width="100%"
+          maxW="300px"
+          as={NextLink}
+          href={`/quiz/?topicId=${topic.id}`}
+        >
+          Utwórz quiz
+        </Button>
       </AccordionPanel>
     </AccordionItem>
   );
