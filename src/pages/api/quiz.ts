@@ -1,19 +1,11 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
+import { QuizData } from "../../types/quizData";
 
-type Answers = {
-  [key in "a" | "b" | "c" | "d"]: string;
-};
-
-type Data = {
-  question: string,
-  answers: Answers,
-  correctAnswer: "a" | "b" | "c" | "d"
-};
 
 export default function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<QuizData>
 ) {
   res.status(200).json({
     question: "What is the name of Franek Madej?",

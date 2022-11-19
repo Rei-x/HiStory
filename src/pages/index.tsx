@@ -1,6 +1,9 @@
 import Head from "next/head";
+import { useQuiz } from "../hooks/useQuiz";
 
 export default function Home() {
+  const query = useQuiz();
+
   return (
     <div>
       <Head>
@@ -11,7 +14,7 @@ export default function Home() {
       <nav>
         <h3>HiStory</h3>
       </nav>
-      <main></main>
+      <main>{JSON.stringify(query.data)}</main>
     </div>
   );
 }
