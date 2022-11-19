@@ -1,26 +1,50 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import fs from "fs";
-var pdfExtract = require("pdf-extract");
+import { Readable } from "stream";
+var extract = require("pdf-text-extract");
+
+const responseToReadable = (response: Response) => {
+  const reader = response.body?.getReader();
+  if (!reader) {
+    throw new Error("test");
+  }
+  const rs = new Readable();
+  rs._read = async () => {
+    const result = await reader.read();
+    if (!result.done) {
+      rs.push(Buffer.from(result.value));
+    } else {
+      rs.push(null);
+      return;
+    }
+  };
+  return rs;
+};
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<unknown>
 ) {
   const url = (req.query.url ??
-    "https://docs.google.com/gview?url=https://kop.ipn.gov.pl/kop/historia/7924,A-wiec-wojna.pdf&embedded=true") as string;
+    "https://hackyeah.pl/wp-content/uploads/2022/11/Regulamin-Konkursu-2022AP-en.pdf") as string;
   const path = `/tmp/history/document.pdf`;
   const fileStream = fs.createWriteStream(path);
   const response = await fetch(url);
-  const responseStream = response.body?.getReader();
+  const responseStream = responseToReadable(response);
   await new Promise((resolve, reject) => {
     responseStream?.pipe(fileStream);
     responseStream?.on("error", reject);
     fileStream.on("finish", resolve);
   });
 
-  const processor = pdfExtract(path);
-  processor.on("success", (content) => {
-    console.log(content);
-    res.send("success");
-  });
+  const pages = await new Promise((res, rej) =>
+    extract(path, function (err, pages) {
+      if (err) {
+        rej();
+      }
+      res(pages);
+    })
+  );
+
+  res.send({ pages });
 }
