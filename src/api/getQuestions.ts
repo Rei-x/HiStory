@@ -70,17 +70,21 @@ export const getQuestions = async ({
       "}"
   );
 
-  const choice = JSON.parse(
-    fixJSON(
-      "{" +
-        completion.data.choices[0].text
-          ?.replaceAll("\n", "")
-          .replaceAll("\t", "") +
-        "}"
-    )
-  ) as QuizData;
+  try {
+    const choice = JSON.parse(
+      fixJSON(
+        "{" +
+          completion.data.choices[0].text
+            ?.replaceAll("\n", "")
+            .replaceAll("\t", "") +
+          "}"
+      )
+    ) as QuizData;
 
-  console.log(choice);
+    console.log(choice);
 
-  return choice;
+    return choice;
+  } catch {
+    return undefined;
+  }
 };

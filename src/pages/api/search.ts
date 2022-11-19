@@ -10,7 +10,7 @@ export default async function handler(
 ) {
   const searchPhrase = (req.query.searchPhrase ?? "wojna") as string;
 
-  const url = `https://szukaj.ipn.gov.pl/search?q=${searchPhrase}&site=&btnG=Szukaj&client=default_frontend&output=xml_no_dtd&proxystylesheet=default_frontend&sort=date%3AD%3AL%3Ad1&wc=200&wc_mc=1&oe=UTF-8&ie=UTF-8&ud=1&exclude_apps=1&tlen=200&size=20`;
+  const url = `https://szukaj.ipn.gov.pl/search?q=${searchPhrase}&site=&site[]=pages_przystanek_historia&btnG=Szukaj&client=default_frontend&output=xml_no_dtd&proxystylesheet=default_frontend&sort=date%3AD%3AL%3Ad1&wc=200&wc_mc=1&oe=UTF-8&ie=UTF-8&ud=1&exclude_apps=1&tlen=200&size=20`;
 
   const response = await fetch(url);
   const body = await response.text();
@@ -19,19 +19,26 @@ export default async function handler(
 
   // console.log({ url }, dom.serialize());
   const results = dom.window.document.querySelectorAll(".res-item");
-  const mappedResults = Array.from(results).map((result) => {
-    const title = result.querySelector("a")?.textContent ?? "";
-    const url = result.querySelector("a")?.href ?? "";
+  const mappedResults = Array.from(results)
+    .map((result) => {
+      const title = result.querySelector("a")?.textContent ?? "";
+      const url = result.querySelector("a")?.href ?? "";
 
-    return {
-      url,
-      title,
-      description: (result.textContent ?? "")
-        .replace(title, "")
-        .replace(url, "")
-        .replace("[PODGLĄD]", ""),
-    };
-  });
+      return {
+        url,
+        title,
+        description: (result.textContent ?? "")
+          .replace(title, "")
+          .replace(url, "")
+          .replace("[PODGLĄD]", ""),
+      };
+    })
+    .filter((resource) => {
+      if (resource.url.includes("youtube")) {
+        return false;
+      }
+      return true;
+    });
 
   res.send({
     resultsCount: results.length,

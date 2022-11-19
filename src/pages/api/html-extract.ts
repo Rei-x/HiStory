@@ -20,6 +20,6 @@ export default async function handler(
   );
 
   res.send({
-    paragraphs,
+    data: paragraphs.join("\n\n\n")
   });
 }

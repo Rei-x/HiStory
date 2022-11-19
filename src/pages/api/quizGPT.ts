@@ -137,6 +137,10 @@ export default async function handler(
   const awaitedQuestions = await Promise.all(questions);
 
   const allQuestionsMerged = awaitedQuestions.reduce((acc, cur) => {
+    if (typeof cur === "undefined") {
+      return acc;
+    }
+
     if (acc.length < numberOfQuestions) {
       return [...acc, ...cur.questions];
     }

@@ -37,14 +37,14 @@ export default async function handler(
     fileStream.on("finish", resolve);
   });
 
-  const pages = await new Promise((res, rej) =>
+  const pages = (await new Promise((res, rej) =>
     extract(path, function (err: any, pages: unknown) {
       if (err) {
         rej();
       }
       res(pages);
     })
-  );
+  )) as any as string[];
 
-  res.send({ pages });
+  res.send({ data: pages.join("\n\n\n") });
 }

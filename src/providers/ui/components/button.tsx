@@ -12,12 +12,19 @@ const Button: ComponentStyleConfig = {
       background: "#b00909",
       color: "white",
       _hover: {
-        color: "#b00909",
-        background: "white",
-        border: "2px",
-        borderColor: "#b00909",
+        opacity: 0.8,
       },
-      _active: { background: "white", fontSize: "17px" },
+      _active: { background: "white" },
+    },
+    outline: {
+      background: "white",
+      color: "#b00909",
+      border: "2px",
+      borderColor: "#b00909",
+      _hover: {
+        opacity: 0.8,
+      },
+      _active: { background: "white" },
     },
   },
 

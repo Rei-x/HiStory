@@ -1,5 +1,5 @@
 import { Button, Flex, Input, Stack, Text } from "@chakra-ui/react";
-import { useTopics } from "../hooks/useTopics";
+import { useTopics } from "../../hooks/useTopics";
 
 const Header = () => {
   return (
