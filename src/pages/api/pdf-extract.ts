@@ -38,7 +38,7 @@ export default async function handler(
   });
 
   const pages = await new Promise((res, rej) =>
-    extract(path, function (err, pages) {
+    extract(path, function (err: any, pages: unknown) {
       if (err) {
         rej();
       }

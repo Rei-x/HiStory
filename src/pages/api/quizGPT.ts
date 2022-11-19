@@ -74,6 +74,39 @@ export default async function handler(
       .json({ error: "Nieprawidłowa ilość pytań, musi być mniejsza niż 4." });
   }
 
+  if (typeof process.env?.OPENAI_API_KEY === "undefined") {
+    const completion = {
+      data: {
+        id: "cmpl-6EJdqZyQit3XhkXWPR7M9Y3vBfekK",
+        object: "text_completion",
+        created: 1668870114,
+        model: "text-davinci-002",
+        choices: [
+          {
+            text: '\t"questions": [\n \t\t{\n \t\t\t"question": "Ideą przewodnią przyświecającą autorom wystawy Akcja AB – Katyń było ukazanie podobnych działań podjętych w tym samym czasie przez obydwu agresorów i zbrodniczych okupantów Rzeczypospolitej Polskiej:",\n \t\t\t"answers": [\n \t\t\t\t"nazistowskie Niemcy i Rosję radziecką.",\n \t\t\t\t"nazistowskie Niemcy i Rosję radziecką oraz współpracy okupantów.",\n \t\t\t\t"nazistowskie Niemcy i Rosję radziecką oraz polityce okupacyjnej.",\n \t\t\t\t"nazistowskie Niemcy i Rosję radziecką oraz polityce okupacyjnej i współpracy okupantów."\n \t\t\t],\n \t\t\t"correctAnswer": "nazistowskie Niemcy i Rosję radziecką."\n \t\t}\n \t]\n }',
+            index: 0,
+            logprobs: null,
+            finish_reason: "stop",
+          },
+        ],
+        usage: {
+          prompt_tokens: 988,
+          completion_tokens: 337,
+          total_tokens: 1325,
+        },
+      },
+    };
+
+    const choice = JSON.parse(
+      "{" +
+        completion.data.choices[0].text
+          ?.replaceAll("\n", "")
+          .replaceAll("\t", "")
+    );
+
+    return res.status(200).json({ ...choice });
+  }
+
   const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
   });
@@ -90,34 +123,10 @@ export default async function handler(
     max_tokens: 2048,
   });
 
-  // const completion = {
-  //   data: {
-  //     id: "cmpl-6EJdqZyQit3XhkXWPR7M9Y3vBfekK",
-  //     object: "text_completion",
-  //     created: 1668870114,
-  //     model: "text-davinci-002",
-  //     choices: [
-  //       {
-  //         text: '\t"questions": [\n \t\t{\n \t\t\t"question": "Ideą przewodnią przyświecającą autorom wystawy Akcja AB – Katyń było ukazanie podobnych działań podjętych w tym samym czasie przez obydwu agresorów i zbrodniczych okupantów Rzeczypospolitej Polskiej:",\n \t\t\t"answers": [\n \t\t\t\t"nazistowskie Niemcy i Rosję radziecką.",\n \t\t\t\t"nazistowskie Niemcy i Rosję radziecką oraz współpracy okupantów.",\n \t\t\t\t"nazistowskie Niemcy i Rosję radziecką oraz polityce okupacyjnej.",\n \t\t\t\t"nazistowskie Niemcy i Rosję radziecką oraz polityce okupacyjnej i współpracy okupantów."\n \t\t\t],\n \t\t\t"correctAnswer": "nazistowskie Niemcy i Rosję radziecką."\n \t\t}\n \t]\n }',
-  //         index: 0,
-  //         logprobs: null,
-  //         finish_reason: "stop",
-  //       },
-  //     ],
-  //     usage: { prompt_tokens: 988, completion_tokens: 337, total_tokens: 1325 },
-  //   },
-  // };
-
-  console.log(completion.data);
-
   const choice = JSON.parse(
     "{" +
       completion.data.choices[0].text?.replaceAll("\n", "").replaceAll("\t", "")
   );
-
-  // const quizText  = completion.data.choices[0];
-
-  // const question =
 
   return res.status(200).json({ ...choice });
 }
