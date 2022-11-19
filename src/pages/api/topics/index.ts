@@ -4,7 +4,7 @@ import { nanoid } from "nanoid";
 
 const path = "/tmp/db.json";
 
-interface Topic {
+export interface Topic {
   id: string;
   title: string;
   historicalPeriod: string;
