@@ -1,50 +1,14 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Configuration, CreateCompletionResponse, OpenAIApi } from "openai";
+import { getQuestions } from "../../api/getQuestions";
+import { QuizData } from "../../types/quizData";
 
 type Data =
-  | {
-      data: CreateCompletionResponse;
-    }
+  | QuizData
   | {
       error: string;
     };
-
-const convertNumberToText = (number: 1 | 2 | 3 | 4) => {
-  const numbers = {
-    1: "jedno pytanie",
-    2: "dwa pytania",
-    3: "trzy pytania",
-    4: "cztery pytania",
-  };
-
-  return numbers[number];
-};
-
-const createPrompt = ({
-  baseText,
-  numberOfQuestions,
-}: {
-  baseText: string;
-  numberOfQuestions: 1 | 2 | 3 | 4;
-}) => {
-  return `
-  Wygeneruj quiz na podstawie tekstu, który ma dokładnie ${convertNumberToText(
-    numberOfQuestions
-  )} i każde ma po 4 odpowiedzi. Na końcu każdego pytania wypisz poprawną odpowiedź.
-  ---
-  Quiz jest w 100% w  formacie JSON. 
-{ "questions": [{
-"question": "Pytanie",
-"answers": ["odpowiedź a", "odpowiedź b", "odpowiedź c", "odpowiedź d"],
-"correctAnswer": "odpowiedź a",
-}]
-  ---
-  ${baseText}
-  ---
-  {
-  `;
-};
 
 interface ExtendedNextApiRequest extends NextApiRequest {
   body: {
@@ -66,12 +30,6 @@ export default async function handler(
 
   if (typeof numberOfQuestions !== "number") {
     return res.status(400).json({ error: "Nie przesłano ilości pytań." });
-  }
-
-  if (numberOfQuestions > 4) {
-    return res
-      .status(400)
-      .json({ error: "Nieprawidłowa ilość pytań, musi być mniejsza niż 4." });
   }
 
   if (typeof process.env?.OPENAI_API_KEY === "undefined") {
@@ -107,26 +65,83 @@ export default async function handler(
     return res.status(200).json({ ...choice });
   }
 
-  const configuration = new Configuration({
-    apiKey: process.env.OPENAI_API_KEY,
-  });
-  const openai = new OpenAIApi(configuration);
+  const paragraphs = baseText.split("\n\n");
 
-  const completion = await openai.createCompletion({
-    model: "text-davinci-002",
-    prompt: createPrompt({
-      numberOfQuestions: (numberOfQuestions as 1) ?? 1,
-      baseText,
-    }),
-    stop: "---",
-    temperature: 0.1,
-    max_tokens: 2048,
-  });
-
-  const choice = JSON.parse(
-    "{" +
-      completion.data.choices[0].text?.replaceAll("\n", "").replaceAll("\t", "")
+  const onlyLongParagraphs = paragraphs.filter((text) => text.length > 50);
+  const normalParagraphs = onlyLongParagraphs.filter(
+    (text) => text.length < 1500
   );
 
-  return res.status(200).json({ ...choice });
+  const allQuestions = normalParagraphs.map((paragraph) => {
+    let questionsForParagraph = 1;
+    if (paragraph.length > 500) {
+      questionsForParagraph = 2;
+    }
+    if (paragraph.length > 1000) {
+      questionsForParagraph = 3;
+    }
+
+    return {
+      text: paragraph,
+      numberOfQuestions: questionsForParagraph,
+    };
+  });
+
+  const numberOfAllPosibleQuestions = allQuestions.reduce((acc, cur) => {
+    return acc + cur.numberOfQuestions;
+  }, 0);
+
+  if (numberOfAllPosibleQuestions < numberOfQuestions) {
+    return res.status(400).json({
+      error: `Za duża ilość pytań na taką ilość tekstu! Możliwa ilość pytań ${numberOfAllPosibleQuestions}`,
+    });
+  }
+
+  const loweredNumberOfQuestions = allQuestions.reduce(
+    (accQuestions, curQuestions) => {
+      const currentNumberOfQuestions = accQuestions.reduce((acc, cur) => {
+        return acc + cur.numberOfQuestions;
+      }, 0);
+
+      if (currentNumberOfQuestions >= numberOfQuestions) {
+        return accQuestions;
+      }
+
+      if (
+        currentNumberOfQuestions + curQuestions.numberOfQuestions >
+        numberOfQuestions
+      ) {
+        return [
+          ...accQuestions,
+          {
+            ...curQuestions,
+            numberOfQuestions: numberOfQuestions - currentNumberOfQuestions,
+          },
+        ];
+      }
+
+      return [...accQuestions, curQuestions];
+    },
+    [] as typeof allQuestions
+  );
+
+  const questions = loweredNumberOfQuestions.map((question) => {
+    console.log(question.text);
+
+    return getQuestions({
+      baseText: question.text,
+      numberOfQuestions: question.numberOfQuestions as 1,
+    });
+  });
+
+  const awaitedQuestions = await Promise.all(questions);
+
+  const allQuestionsMerged = awaitedQuestions.reduce((acc, cur) => {
+    if (acc.length < numberOfQuestions) {
+      return [...acc, ...cur.questions];
+    }
+    return acc;
+  }, [] as QuizData["questions"]);
+
+  return res.status(200).json({ questions: allQuestionsMerged });
 }

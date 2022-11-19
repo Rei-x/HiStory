@@ -5,6 +5,7 @@ import {
   FormLabel,
   Heading,
   Input,
+  Textarea,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useGenerateQuiz } from "../hooks/useGenerateQuiz";
@@ -29,8 +30,7 @@ const Quiz = () => {
       </Button>
       <FormLabel>
         Tekst na którego podstawie wygenerowany zostanie quiz
-        <Input
-          type="text"
+        <Textarea
           value={baseText}
           onChange={(e) => {
             setBaseText(e.target.value);
@@ -42,7 +42,11 @@ const Quiz = () => {
           type="number"
           value={numberOfQuestions}
           onChange={(e) => {
-            setNumberOfQuestions(parseInt(e.target.value));
+            const number = parseInt(e.target.value);
+
+            if (number !== NaN) {
+              setNumberOfQuestions(number);
+            }
           }}
         />
       </FormLabel>
