@@ -1,5 +1,4 @@
 import { Button, Flex, Input, Stack, Text } from "@chakra-ui/react";
-import { title } from "process";
 import { useTopics } from "../hooks/useTopics";
 
 const Header = () => {
@@ -13,8 +12,6 @@ const Header = () => {
     </Flex>
   );
 };
-//title string
-//history period string
 
 const Body = () => {
   const dataTopics = useTopics();
@@ -24,7 +21,7 @@ const Body = () => {
   return (
     <Stack>
       {data?.map((data) => (
-        <Flex justifyContent="space-between" key={data.key} mt="50px">
+        <Flex justifyContent="space-between" key={data.id} mt="50px">
           <Text>{data.title}</Text>
           <Text>{data.historicalPeriod}</Text>
           {/* <Text>{data.title}</Text> */}
@@ -38,7 +35,7 @@ const Body = () => {
 const Topics = () => {
   return (
     <Stack mx="128px">
-      <Header></Header>
+      <Header />
       <Body />
     </Stack>
   );
