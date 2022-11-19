@@ -15,7 +15,8 @@ export const handler = (req: NextApiRequest, res: NextApiResponse) => {
   try {
     dbContent = readFileSync(path).toString() ?? "[]";
   } catch (error) {
-    dbContent = "[]";
+    dbContent =
+      '[{"title": "random topic","historicalPeriod": "II wojna światowa"}]';
   }
   const db = JSON.parse(dbContent) as Topic[];
 
@@ -39,5 +40,4 @@ export const handler = (req: NextApiRequest, res: NextApiResponse) => {
 
   res.send("success");
 };
-
 export default handler;
