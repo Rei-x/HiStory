@@ -2,14 +2,26 @@ import { Accordion, Button, Flex, Input, Stack, Text } from "@chakra-ui/react";
 import { TopicAccordion } from "../../components/Topic";
 import { useTopics } from "../../hooks/useTopics";
 import NextLink from "next/link";
+import { useState } from "react";
 
-const Header = () => {
+const Header = ({
+  filter,
+  onChange,
+}: {
+  filter: string;
+  onChange: (x: string) => void;
+}) => {
   return (
     <Flex mt="64px" alignItems="center" justifyContent="space-between">
       <Text fontSize="30px" fontWeight="800">
         Tematy
       </Text>
-      <Input placeholder="szukaj" border="0px" w="400px" />
+      <Input
+        placeholder="szukaj"
+        w="400px"
+        value={filter}
+        onChange={({ target }) => onChange(target.value)}
+      />
       <Button as={NextLink} href="/topics/add" w="200px">
         dodaj nowy temat
       </Button>
@@ -17,9 +29,11 @@ const Header = () => {
   );
 };
 
-const Body = () => {
+const Body = ({ filter }: { filter: string }) => {
   const dataTopics = useTopics();
-  const topics = dataTopics.data?.topics;
+  const topics = dataTopics.data?.topics.filter((t) =>
+    t.title.toLowerCase().startsWith(filter.toLowerCase().trim())
+  );
 
   return (
     <Accordion allowMultiple>
@@ -31,10 +45,11 @@ const Body = () => {
 };
 
 const Topics = () => {
+  const [filter, setFilter] = useState("");
   return (
-    <Stack mx="128px">
-      <Header />
-      <Body />
+    <Stack mx="128px" spacing={8}>
+      <Header filter={filter} onChange={(text) => setFilter(text)} />
+      <Body filter={filter} />
     </Stack>
   );
 };
