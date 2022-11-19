@@ -24,9 +24,11 @@ export const handler = (req: NextApiRequest, res: NextApiResponse) => {
     const id = req.query.id as string;
     const indexToDelete = db.findIndex((topic) => topic.id === id);
     db.splice(indexToDelete, 1);
+    res.send("success");
   } else if (req.method === "POST") {
     const topicDto = req.body as { title: string; historicalPeriod: string };
     db.push({ ...topicDto, id: nanoid() });
+    res.send("success");
   } else if (req.method === "GET") {
     res.send({ topics: db });
   } else {
@@ -37,8 +39,6 @@ export const handler = (req: NextApiRequest, res: NextApiResponse) => {
   const newDbContent = JSON.stringify(db);
 
   writeFileSync(path, newDbContent);
-
-  res.send("success");
 };
 
 export default handler;

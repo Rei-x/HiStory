@@ -1,6 +1,7 @@
 import { Accordion, Button, Flex, Input, Stack, Text } from "@chakra-ui/react";
 import { TopicAccordion } from "../../components/Topic";
 import { useTopics } from "../../hooks/useTopics";
+import NextLink from "next/link";
 
 const Header = () => {
   return (
@@ -9,7 +10,9 @@ const Header = () => {
         Tematy
       </Text>
       <Input placeholder="szukaj" border="0px" w="400px" />
-      <Button w="200px">dodaj nowy temat</Button>
+      <Button as={NextLink} href="/topics/add" w="200px">
+        dodaj nowy temat
+      </Button>
     </Flex>
   );
 };
