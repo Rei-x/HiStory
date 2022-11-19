@@ -1,13 +1,6 @@
 import Head from "next/head";
-import {
-  Button,
-  Input,
-  Flex,
-  Stack,
-  Text,
-  Image,
-  Link,
-} from "@chakra-ui/react";
+import { Input, Flex, Stack, Text, Image, Link } from "@chakra-ui/react";
+import NextLink from "next/link";
 
 function Login() {
   return (
@@ -35,7 +28,9 @@ function Login() {
             <Input placeholder="login" />
             <Input placeholder="hasło" />
 
-            <Button>zaloguj</Button>
+            <Link as={NextLink} href="/topics">
+              zaloguj
+            </Link>
           </Stack>
           <Flex
             w="300px"

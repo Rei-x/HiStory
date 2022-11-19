@@ -1,4 +1,5 @@
-import { Button, Flex, Input, Stack, Text } from "@chakra-ui/react";
+import { Accordion, Button, Flex, Input, Stack, Text } from "@chakra-ui/react";
+import { TopicAccordion } from "../../components/Topic";
 import { useTopics } from "../../hooks/useTopics";
 
 const Header = () => {
@@ -15,20 +16,14 @@ const Header = () => {
 
 const Body = () => {
   const dataTopics = useTopics();
-  const data = dataTopics.data?.topics;
-  console.log(dataTopics);
+  const topics = dataTopics.data?.topics;
 
   return (
-    <Stack>
-      {data?.map((data) => (
-        <Flex justifyContent="space-between" key={data.id} mt="50px">
-          <Text>{data.title}</Text>
-          <Text>{data.historicalPeriod}</Text>
-          {/* <Text>{data.title}</Text> */}
-          <Text>ilość quizów</Text>
-        </Flex>
+    <Accordion allowMultiple>
+      {topics?.map((topic) => (
+        <TopicAccordion key={topic.id} topic={topic} />
       ))}
-    </Stack>
+    </Accordion>
   );
 };
 
@@ -40,5 +35,4 @@ const Topics = () => {
     </Stack>
   );
 };
-
 export default Topics;

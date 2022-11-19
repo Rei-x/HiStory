@@ -1,6 +1,7 @@
 export type QuizData = {
   id: string;
   topicId: string;
+  title: string;
   questions: {
     question: string;
     answers: string[];

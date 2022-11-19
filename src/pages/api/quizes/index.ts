@@ -11,7 +11,7 @@ export const handler = (req: NextApiRequest, res: NextApiResponse) => {
     dbContent = readFileSync(path).toString() ?? "[]";
   } catch (error) {
     dbContent =
-      '[{"id":"V1StGXR8_Z5jdHi6B-myw","topicId":"V1StGXR8_Z5jdHi6B-myT","questions":[{"question":"Co było ideą przewodnią przyświecającą autorom wystawy Akcja AB – Katyń?","answers":["ukazanie podobnych działań podjętych w tym samym czasie przez obydwu agresorów i zbrodniczych okupantów Rzeczypospolitej Polskiej: nazistowskie Niemcy i Rosję radziecką","pokazanie, że zbrodnie Niemców były gorsze niż zbrodnie Sowietów","pokazanie, że zbrodnie Sowietów były gorsze niż zbrodnie Niemców","pokazanie, że zbrodnie Niemców i Sowietów były takie same"]}]}]';
+      '[{"id":"V1StGXR8_Z5jdHi6B-myw","title": "Katyń", "topicId":"V1StGXR8_Z5jdHi6B-myT","questions":[{"question":"Co było ideą przewodnią przyświecającą autorom wystawy Akcja AB – Katyń?","answers":["ukazanie podobnych działań podjętych w tym samym czasie przez obydwu agresorów i zbrodniczych okupantów Rzeczypospolitej Polskiej: nazistowskie Niemcy i Rosję radziecką","pokazanie, że zbrodnie Niemców były gorsze niż zbrodnie Sowietów","pokazanie, że zbrodnie Sowietów były gorsze niż zbrodnie Niemców","pokazanie, że zbrodnie Niemców i Sowietów były takie same"]}]}]';
   }
   const db = JSON.parse(dbContent) as QuizData[];
 
