@@ -46,7 +46,7 @@ const Quiz = () => {
       <Modal size="xl" isOpen={modal.isOpen} onClose={modal.onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
+          <ModalHeader>{topic?.title ?? ""}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>{baseText.data?.data}</ModalBody>
           <ModalFooter>
