@@ -30,8 +30,9 @@ export const handler = (req: NextApiRequest, res: NextApiResponse) => {
         correctAnswer: string;
       }[];
     };
-    db.push({ ...quizDto, id: nanoid() });
-    res.send("success");
+    const id = nanoid();
+    db.push({ ...quizDto, id });
+    res.send(id);
   } else if (req.method === "GET") {
     const topicId = req.query.topicId ?? "";
     if (topicId.length > 0) {
