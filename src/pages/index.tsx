@@ -1,11 +1,8 @@
 import Head from "next/head";
 import { Input, Flex, Stack, Text, Link, Button } from "@chakra-ui/react";
-import NextLink from "next/link";
-import { Layout } from "../components/Layout";
 import { useRouter } from "next/router";
 import { Logo } from "../components/Logo";
 import Image from "next/image";
-import { getQuizes } from "../api/getQuizes";
 import { getTopics } from "../api/getTopics";
 
 function Login() {

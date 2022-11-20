@@ -4,6 +4,7 @@ import {
   Container,
   FormLabel,
   Heading,
+  HStack,
   Input,
   Modal,
   ModalBody,
@@ -13,7 +14,9 @@ import {
   ModalHeader,
   ModalOverlay,
   SkeletonText,
+  Switch,
   Text,
+  Tooltip,
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
@@ -25,6 +28,22 @@ import { useSearch } from "../../hooks/useSearch";
 import { useTextFromResource } from "../../hooks/useTextFromResource";
 import { useTopics } from "../../hooks/useTopics";
 import { useDebounce } from "use-debounce";
+
+const Preview = ({ url, text }: { url: string; text?: string }) => {
+  if (url.endsWith(".pdf")) {
+    return (
+      <embed
+        src={`https://drive.google.com/viewerng/
+viewer?embedded=true&url=${url}`}
+        height="650"
+        width="500"
+        type="application/pdf"
+      />
+    );
+  }
+
+  return <Text whiteSpace="pre-line">{`${text}` ?? ""}</Text>;
+};
 
 const Quiz = () => {
   const router = useRouter();
@@ -53,7 +72,11 @@ const Quiz = () => {
         <ModalContent>
           <ModalHeader>{searchText}</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>{baseText.data?.data}</ModalBody>
+          <ModalBody>
+            <Box shadow="md" maxH="700px" overflowY="scroll">
+              <Preview text={baseText.data?.data} url={resourceUrl} />
+            </Box>
+          </ModalBody>
           <ModalFooter>
             <Button
               mx="auto"
@@ -76,19 +99,33 @@ const Quiz = () => {
       </Modal>
       <Container maxW="container.lg" pt={8}>
         <Heading>Wybierz źródło</Heading>
-        <FormLabel mt={4} width="300px">
-          Ilość pytań
-          <Input
-            type="number"
-            value={numberOfQuestions}
-            onChange={(e) => {
-              const number = parseInt(e.target.value);
+        <Tooltip label="Ilość pytań może być mniejsza niż wpisana">
+          <FormLabel mt={4} width="300px">
+            Ilość pytań*
+            <Input
+              type="number"
+              value={numberOfQuestions}
+              onChange={(e) => {
+                const number = parseInt(e.target.value);
 
-              setNumberOfQuestions(number);
-            }}
-          />
-        </FormLabel>
-        <FormLabel width="300px">
+                setNumberOfQuestions(number);
+              }}
+            />
+          </FormLabel>
+        </Tooltip>
+        <HStack mt={1} w="200px" justifyContent="space-between">
+          <Text>Pytaj o wydarzenia</Text>
+          <Switch colorScheme="red" defaultChecked={true} />
+        </HStack>
+        <HStack mt={1} w="200px" justifyContent="space-between">
+          <Text>Pytaj o osoby</Text>
+          <Switch colorScheme="red" defaultChecked={true} />
+        </HStack>
+        <HStack mt={1} w="200px" justifyContent="space-between">
+          <Text>Pytaj o daty</Text>
+          <Switch colorScheme="red" defaultChecked={true} />
+        </HStack>
+        <FormLabel mt={4} width="300px">
           Wyszukaj frazę w bazie IPN.
           <Input
             type="text"
