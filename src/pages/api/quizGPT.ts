@@ -98,7 +98,7 @@ export default async function handler(
     return getQuestions({
       baseText: question.text,
       numberOfQuestions: question.numberOfQuestions as 1,
-      mock: true,
+      // mock: true,
     });
   });
 
