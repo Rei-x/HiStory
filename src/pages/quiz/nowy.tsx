@@ -46,7 +46,7 @@ const Quiz = () => {
 
   const toast = useToast();
   const [title, setTitle] = useState("");
-  const [level, setLevel] = useState("easy");
+  const [level, setLevel] = useState("medium");
 
   return (
     <Layout>
