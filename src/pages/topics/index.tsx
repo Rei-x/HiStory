@@ -33,7 +33,7 @@ const Header = ({
 const Body = ({ filter }: { filter: string }) => {
   const dataTopics = useTopics();
   const topics = dataTopics.data?.topics.filter((t) =>
-    t.title.toLowerCase().startsWith(filter.toLowerCase().trim())
+    t.title.toLowerCase().includes(filter.toLowerCase().trim())
   );
 
   return (
