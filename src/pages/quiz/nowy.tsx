@@ -77,7 +77,7 @@ const Quiz = () => {
               "Content-Type": "application/json",
             },
           })
-            .then(() => {
+            .then(async (quizId) => {
               toast({
                 title: "Sukces",
                 status: "success",
@@ -87,7 +87,7 @@ const Quiz = () => {
               router.push({
                 pathname: "/quiz/pobierz",
                 query: {
-                  
+                  quizId: await quizId.text()
                 }
               });
             })
