@@ -1,4 +1,5 @@
 import { Button, Heading, Stack, Text } from "@chakra-ui/react";
+import { saveAs } from "file-saver";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { Layout } from "../../components/Layout";
@@ -13,6 +14,14 @@ import {
   StyleSheet,
   PDFDownloadLink,
 } from "@react-pdf/renderer";
+
+import {
+  Document as DocxDocument,
+  Header,
+  Packer,
+  Paragraph,
+  TextRun,
+} from "docx";
 import { QuizData } from "../../types/quizData";
 
 const QuizPDF = ({ quiz }: { quiz: QuizData }) => {
@@ -68,6 +77,35 @@ const QuizPDF = ({ quiz }: { quiz: QuizData }) => {
   );
 };
 
+const generateDocxQuiz = (quiz: QuizData) => {
+  return new DocxDocument({
+    sections: [
+      {
+        headers: {
+          default: new Header({
+            children: [new Paragraph(quiz.title)],
+          }),
+        },
+        properties: {},
+        children: [
+          ...quiz.questions.map(
+            ({ question, answers }) =>
+              new Paragraph({
+                children: [
+                  new TextRun({ text: question + "\n" }),
+                  ...answers.map(
+                    (answer, index) => new TextRun(`${index + 1}. ${answer} \n`)
+                  ),
+                  new TextRun("\n\n"),
+                ],
+              })
+          ),
+        ],
+      },
+    ],
+  });
+};
+
 const Pobierz = () => {
   const router = useRouter();
   const { data } = useQuiz({ variables: {} });
@@ -76,6 +114,7 @@ const Pobierz = () => {
   const quiz = data?.quizes.find((q) => q.id === quizId);
 
   const [downloadLink, setDownloadLink] = useState(false);
+  const [docxDoc, setDocxDoc] = useState<any>(null);
 
   useEffect(() => {
     Font.register({
@@ -86,17 +125,36 @@ const Pobierz = () => {
       family: "OpenSans-Bold",
       src: "/OpenSans-Bold.ttf",
     });
+
+    if (quiz) {
+      setDocxDoc(generateDocxQuiz(quiz));
+    }
+
     setDownloadLink(true);
-  }, []);
+  }, [quiz]);
 
   return (
     <Layout>
       <Stack spacing={8}>
         <Heading>{quiz?.title}</Heading>
         {downloadLink && quiz ? (
-          <Button as={PDFDownloadLink} document={<QuizPDF quiz={quiz} />}>
-            Pobierz PDF z quizem
-          </Button>
+          <Stack direction="row">
+            <Button as={PDFDownloadLink} document={<QuizPDF quiz={quiz} />}>
+              Pobierz PDF z quizem
+            </Button>
+
+            <Button
+              onClick={() => {
+                if (docxDoc) {
+                  Packer.toBlob(docxDoc).then((blob) => {
+                    saveAs(blob, `${quiz.title}.docx`);
+                  });
+                }
+              }}
+            >
+              Pobierz plik .docx
+            </Button>
+          </Stack>
         ) : null}
 
         <Heading as="h2" fontSize="xl">
