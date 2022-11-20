@@ -35,9 +35,12 @@ export default async function handler(
   const paragraphs = baseText.split("\n\n");
 
   const onlyLongParagraphs = paragraphs.filter((text) => text.length > 50);
-  const normalParagraphs = onlyLongParagraphs.filter(
-    (text) => text.length < 1500
-  );
+  const normalParagraphs = onlyLongParagraphs.map((paragraph) => {
+    if (paragraph.length > 1500) {
+      return paragraph.slice(0, 1500);
+    }
+    return paragraph;
+  });
 
   const allQuestions = normalParagraphs.map((paragraph) => {
     let questionsForParagraph = 1;
