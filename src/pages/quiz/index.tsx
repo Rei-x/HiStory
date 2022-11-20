@@ -60,7 +60,11 @@ viewer?embedded=true&url=${url}`}
     );
   }
 
-  return <Text whiteSpace="pre-line">{`${text ?? ""}`}</Text>;
+  return (
+    <Center p={2}>
+      <Text whiteSpace="pre-line">{`${text.trim() ?? ""}`}</Text>
+    </Center>
+  );
 };
 
 const Quiz = () => {

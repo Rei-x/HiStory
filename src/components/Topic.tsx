@@ -11,6 +11,7 @@ import {
   ListItem,
   Button,
   Link,
+  TagLabel,
 } from "@chakra-ui/react";
 import { useQuiz } from "../hooks/useQuiz";
 import { Topic } from "../pages/api/topics";
@@ -46,7 +47,25 @@ export const TopicAccordion = ({ topic }: { topic: Topic }) => {
           {data?.quizes.map((quiz) => (
             <ListItem key={quiz.id}>
               <Link as={NextLink} href={`/quiz/pobierz?quizId=${quiz.id}`}>
-                {quiz.title} (liczba pytań: {quiz.questions.length})
+                {quiz.title}{" "}
+                <Tag
+                  colorScheme={
+                    quiz.level === "easy"
+                      ? "green"
+                      : quiz.level === "medium"
+                      ? "yellow"
+                      : "red"
+                  }
+                >
+                  <TagLabel>
+                    {quiz.level === "easy"
+                      ? "Łatwy"
+                      : quiz.level === "medium"
+                      ? "Średni"
+                      : "Trudny"}
+                  </TagLabel>
+                </Tag>{" "}
+                (liczba pytań: {quiz.questions.length})
               </Link>
             </ListItem>
           ))}

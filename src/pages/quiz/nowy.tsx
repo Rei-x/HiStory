@@ -12,6 +12,7 @@ import {
   List,
   ListItem,
   OrderedList,
+  Select,
   SkeletonText,
   useToast,
 } from "@chakra-ui/react";
@@ -45,6 +46,7 @@ const Quiz = () => {
 
   const toast = useToast();
   const [title, setTitle] = useState("");
+  const [level, setLevel] = useState("easy");
 
   return (
     <Layout>
@@ -61,6 +63,27 @@ const Quiz = () => {
       <Link target="_blank" mt={2} color="gray" href={query.url as string}>
         {query.url}
       </Link>
+      <FormControl my={4}>
+        <FormLabel>Trudność quizu</FormLabel>
+        <Select
+          borderColor="#b00909"
+          borderRadius={0}
+          borderWidth={2}
+          value={level}
+          onChange={(e) => setLevel(e.target.value)}
+        >
+          {[
+            { value: "easy", label: "Łatwy" },
+            { value: "medium", label: "Średni" },
+            { value: "hard", label: "Trudny" },
+          ].map(({ value, label }) => (
+            <option key={value} value={value}>
+              {label}
+            </option>
+          ))}
+        </Select>
+      </FormControl>
+
       <form
         onSubmit={async (e) => {
           e.preventDefault();
@@ -75,6 +98,7 @@ const Quiz = () => {
 
           addQuiz({
             title,
+            level,
             questions: questions.questions,
             topicId: query.topicId as string,
           })
