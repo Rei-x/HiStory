@@ -16,6 +16,8 @@ import {
 import { useQuiz } from "../hooks/useQuiz";
 import { Topic } from "../pages/api/topics";
 import NextLink from "next/link";
+import { db } from "../api/firebase";
+import { deleteDoc, doc } from "firebase/firestore";
 
 export const TopicAccordion = ({ topic }: { topic: Topic }) => {
   const { data } = useQuiz({ variables: { topicId: topic.id } });
@@ -70,16 +72,29 @@ export const TopicAccordion = ({ topic }: { topic: Topic }) => {
             </ListItem>
           ))}
         </List>
-        <Button
-          mx="auto"
-          my={4}
-          width="100%"
-          maxW="300px"
-          as={NextLink}
-          href={`/quiz/?topicId=${topic.id}`}
+        <Flex
+          justifyContent="flex-end"
+          alignItems="center"
+          flexDirection="row"
+          py={4}
         >
-          Utwórz quiz
-        </Button>
+          <Button
+            variant="outline"
+            maxW="200px"
+            mr={2}
+            onClick={() => deleteDoc(doc(db, "topics", topic.id))}
+          >
+            Usuń temat
+          </Button>
+          <Button
+            width="100%"
+            maxW="300px"
+            as={NextLink}
+            href={`/quiz/?topicId=${topic.id}`}
+          >
+            Utwórz quiz
+          </Button>
+        </Flex>
       </AccordionPanel>
     </AccordionItem>
   );
