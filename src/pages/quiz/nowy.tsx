@@ -93,8 +93,18 @@ const Quiz = () => {
             if (element.name === "") {
               return;
             }
+            if (element.name.includes("correctAnswer")) {
+              if (element.checked) {
+                set(questions, element.name, element.value);
+              } else {
+                return;
+              }
+            }
+
             set(questions, element.name, element.value);
           });
+
+          console.log(questions);
 
           addQuiz({
             title,
