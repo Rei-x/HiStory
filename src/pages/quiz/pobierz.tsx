@@ -1,4 +1,4 @@
-import { Button, Heading, Stack, Text } from "@chakra-ui/react";
+import { Button, Heading, Link, Stack, Text } from "@chakra-ui/react";
 import { saveAs } from "file-saver";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -143,6 +143,20 @@ const Pobierz = () => {
     <Layout>
       <Stack spacing={8}>
         <Heading>{quiz?.title}</Heading>
+        {quiz?.resourceUrl ? (
+          <Link
+            target="_blank"
+            mt={2}
+            color="gray"
+            href={quiz.resourceUrl as string}
+          >
+            {quiz.resourceUrl}
+          </Link>
+        ) : (
+          <Text mt={2} color="gray">
+            Quiz wygenerowano bez materiału
+          </Text>
+        )}
         {downloadLink && quiz ? (
           <Stack direction="row">
             <Button as={PDFDownloadLink} document={<QuizPDF quiz={quiz} />}>

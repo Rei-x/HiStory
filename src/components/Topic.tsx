@@ -18,9 +18,11 @@ import { Topic } from "../pages/api/topics";
 import NextLink from "next/link";
 import { db } from "../api/firebase";
 import { deleteDoc, doc } from "firebase/firestore";
+import { useQueryClient } from "react-query";
 
 export const TopicAccordion = ({ topic }: { topic: Topic }) => {
   const { data } = useQuiz({ variables: { topicId: topic.id } });
+  const client = useQueryClient();
   return (
     <AccordionItem>
       <Heading
@@ -82,7 +84,10 @@ export const TopicAccordion = ({ topic }: { topic: Topic }) => {
             variant="outline"
             maxW="200px"
             mr={2}
-            onClick={() => deleteDoc(doc(db, "topics", topic.id))}
+            onClick={async () => {
+              await deleteDoc(doc(db, "topics", topic.id));
+              await client.refetchQueries("topics");
+            }}
           >
             Usuń temat
           </Button>

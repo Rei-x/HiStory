@@ -99,6 +99,7 @@ const Quiz = () => {
           addQuiz({
             title,
             level,
+            resourceUrl: query.url as string,
             questions: questions.questions,
             topicId: query.topicId as string,
           })
