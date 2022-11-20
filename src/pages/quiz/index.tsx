@@ -20,6 +20,7 @@ import {
   Text,
   Tooltip,
   useDisclosure,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
@@ -82,10 +83,11 @@ const Quiz = () => {
   }, [topicId, topic]);
 
   const searchQuery = useSearch(debouncedSearchText);
-  const [numberOfQuestions, setNumberOfQuestions] = useState(1);
+  const [numberOfQuestions, setNumberOfQuestions] = useState(3);
   const [resourceUrl, setResourceUrl] = useState("");
   const baseText = useTextFromResource(resourceUrl);
   const modal = useDisclosure();
+  const toast = useToast();
 
   return (
     <Layout>
@@ -104,6 +106,19 @@ const Quiz = () => {
               mx="auto"
               colorScheme="blue"
               onClick={() => {
+                if (
+                  baseText.data?.data === "" ||
+                  typeof baseText.data?.data === "undefined"
+                ) {
+                  toast({
+                    title: "Niepoprawny zasób",
+                    status: "error",
+                    description: "Materiał źródłowy nie może być pusty.",
+                  });
+
+                  return;
+                }
+
                 router.push({
                   pathname: "/quiz/nowy",
                   query: {
@@ -166,6 +181,19 @@ const Quiz = () => {
                     modal.onOpen();
                   }}
                   onSelect={(url) => {
+                    if (
+                      baseText.data?.data === "" ||
+                      typeof baseText.data?.data === "undefined"
+                    ) {
+                      toast({
+                        title: "Niepoprawny zasób",
+                        status: "error",
+                        description: "Materiał źródłowy nie może być pusty.",
+                      });
+
+                      return;
+                    }
+
                     setResourceUrl(resource.url);
                     modal.onClose();
 
