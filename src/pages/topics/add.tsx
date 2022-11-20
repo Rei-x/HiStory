@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { addTopic } from "../../api/addTopic";
 import { Layout } from "../../components/Layout";
 
 const TopicFormView = () => {
@@ -21,12 +22,11 @@ const TopicFormView = () => {
     title: string;
     historicalPeriod: string;
   }) => {
-    await fetch("/api/topics", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(topic),
+    await addTopic({
+      title: topic.title,
+      historicalPeriod: topic.historicalPeriod,
     });
-    toast({ title: "Pomyślnie dodano temat" });
+    toast({ title: "Pomyślnie dodano temat", status: "success" });
     router.push("/topics");
   };
 

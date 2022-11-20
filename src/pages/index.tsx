@@ -5,9 +5,13 @@ import { Layout } from "../components/Layout";
 import { useRouter } from "next/router";
 import { Logo } from "../components/Logo";
 import Image from "next/image";
+import { getQuizes } from "../api/getQuizes";
+import { getTopics } from "../api/getTopics";
+
 function Login() {
   const router = useRouter();
 
+  getTopics().then(console.log);
   return (
     <>
       <Head>

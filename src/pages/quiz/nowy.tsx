@@ -22,6 +22,7 @@ import { Question } from "../../components/Question";
 import { useGenerateQuiz } from "../../hooks/useGenerateQuiz";
 import { useTextFromResource } from "../../hooks/useTextFromResource";
 import set from "lodash/set";
+import { addQuiz } from "../../api/addQuiz";
 
 const Quiz = () => {
   const { query, ...router } = useRouter();
@@ -57,13 +58,13 @@ const Quiz = () => {
           }}
         />
       </FormControl>
-      <Link mt={2} color="gray" href={query.url as string}>
+      <Link target="_blank" mt={2} color="gray" href={query.url as string}>
         {query.url}
       </Link>
       <form
         onSubmit={async (e) => {
           e.preventDefault();
-          const questions = {};
+          const questions = {} as any;
 
           Object.values((e.target as any).elements).forEach((element: any) => {
             if (element.name === "") {
@@ -72,16 +73,10 @@ const Quiz = () => {
             set(questions, element.name, element.value);
           });
 
-          fetch("/api/quizes", {
-            method: "POST",
-            body: JSON.stringify({
-              title,
-              questions: questions.questions,
-              topicId: query.topicId as string,
-            }),
-            headers: {
-              "Content-Type": "application/json",
-            },
+          addQuiz({
+            title,
+            questions: questions.questions,
+            topicId: query.topicId as string,
           })
             .then(async (quizId) => {
               toast({
@@ -93,7 +88,7 @@ const Quiz = () => {
               router.push({
                 pathname: "/quiz/pobierz",
                 query: {
-                  quizId: await quizId.text(),
+                  quizId,
                 },
               });
             })

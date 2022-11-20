@@ -45,7 +45,7 @@ export const getQuestions = async ({
   numberOfQuestions: 1 | 2 | 3 | 4;
   baseText: string;
   mock?: boolean;
-}) => {
+}): Promise<QuizData | undefined> => {
   if (mock) {
     return JSON.parse(
       '{"questions":[{"question":"Jak nazywał się konflikt polsko-bolszewicki?","answers":["Wojna polsko-bolszewicka","Wojna polsko-niemiecka","Wojna polsko-rosyjska","Wojna polsko-austriacka"],"correctAnswer":"Wojna polsko-bolszewicka"},{"question":"Dlaczego wojska bolszewickie zajęły Wilno?","answers":["Było to miasto polskie","Było to miasto bolszewickie","Było to miasto niemieckie","Było to miasto radzieckie"],"correctAnswer":"Było to miasto polskie"},{"question":"Kiedy rozpoczęła się wojna polsko-rosyjska?","answers":["7 lutego 1919 r.","14 lutego 1919 r.","21 lutego 1919 r.","1 marca 1919 r."],"correctAnswer":"7 lutego 1919 r."},{"question":"W którym mieście doszło do pierwszych walk?","answers":["Tyraspol","Mosty","Kobryn","Skidl"],"correctAnswer":"Tyraspol"},{"question":"Ile żołnierzy utraciły oddziały Wojska Polskiego w wyniku działań wojennych w latach 1918–1920?","answers":["251 tys.","37,5 tys.","50,7 tys.","Ranni"],"correctAnswer":"251 tys."}]}'
