@@ -88,18 +88,24 @@ const generateDocxQuiz = (quiz: QuizData) => {
         },
         properties: {},
         children: [
-          ...quiz.questions.map(
-            ({ question, answers }) =>
-              new Paragraph({
-                children: [
-                  new TextRun({ text: question + "\n" }),
-                  ...answers.map(
-                    (answer, index) => new TextRun(`${index + 1}. ${answer} \n`)
-                  ),
-                  new TextRun("\n\n"),
-                ],
-              })
-          ),
+          ...quiz.questions.flatMap(({ question, answers }, index) => [
+            new Paragraph({
+              children: [
+                new TextRun({ text: index > 0 ? "\n" + question : question }),
+              ],
+            }),
+            new Paragraph({
+              children: [
+                ...answers.map(
+                  (answer, index) =>
+                    new TextRun({
+                      text: `${index + 1}. ${answer}`,
+                      break: 1,
+                    })
+                ),
+              ],
+            }),
+          ]),
         ],
       },
     ],
