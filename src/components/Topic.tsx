@@ -45,7 +45,7 @@ export const TopicAccordion = ({ topic }: { topic: Topic }) => {
         <List spacing={3}>
           {data?.quizes.map((quiz) => (
             <ListItem key={quiz.id}>
-              <Link as={NextLink} href="#">
+              <Link as={NextLink} href={`/quiz/pobierz?quizId=${quiz.id}`}>
                 {quiz.title} (liczba pytań: {quiz.questions.length})
               </Link>
             </ListItem>

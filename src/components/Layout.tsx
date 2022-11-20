@@ -1,16 +1,19 @@
-import { Container, HStack, Link, Text } from "@chakra-ui/react";
+import { Container, Flex, Link, Text } from "@chakra-ui/react";
 import React, { ReactNode } from "react";
+import NextLink from "next/link";
 
 export const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <div>
-      <HStack mx="auto" mt={8} maxW="container.xl">
-        <Text ml="32px" mr="auto" fontSize="36px" color="#b00909">
+      <Flex justifyContent="space-between" mx="auto" mt={8} maxW="container.lg">
+        <Text fontSize="36px" color="#b00909">
           HiStory
         </Text>
-        <Link>Tematy</Link>
-      </HStack>
-      <Container pb={8} maxW="container.lg">
+        <Link as={NextLink} href="/topics">
+          Tematy
+        </Link>
+      </Flex>
+      <Container maxW="container.lg" p={0} py={8}>
         {children}
       </Container>
     </div>
