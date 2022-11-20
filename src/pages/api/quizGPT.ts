@@ -34,7 +34,7 @@ export default async function handler(
 
   const paragraphs = baseText.split("\n\n");
 
-  const onlyLongParagraphs = paragraphs.filter((text) => text.length > 50);
+  const onlyLongParagraphs = paragraphs.filter((text) => text.length > 200);
   const normalParagraphs = onlyLongParagraphs.map((paragraph) => {
     if (paragraph.length > 1500) {
       return paragraph.slice(0, 1500);
@@ -111,7 +111,7 @@ export default async function handler(
     if (typeof cur === "undefined") {
       return acc;
     }
-
+    console.log(cur);
     if (acc.length < numberOfQuestions) {
       return [...acc, ...cur.questions];
     }

@@ -114,7 +114,7 @@ const generateDocxQuiz = (quiz: QuizData) => {
 
 const Pobierz = () => {
   const router = useRouter();
-  const { data } = useQuiz({ variables: {} });
+  const { data } = useQuiz();
   const quizId = router.query.quizId as string;
 
   const quiz = data?.quizes.find((q) => q.id === quizId);

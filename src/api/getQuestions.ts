@@ -2,6 +2,14 @@ import { Configuration, OpenAIApi } from "openai";
 import { QuizData } from "../types/quizData";
 import fixJSON from "jsonrepair";
 
+const omitInvalidQuestions = (questions: QuizData) => {
+  const validQuestions = questions.questions.filter((question) => {
+    return !question.answers.find((answer) => answer.includes("odpowiedź"));
+  });
+
+  return { ...questions, questions: validQuestions };
+};
+
 const convertNumberToText = (number: 1 | 2 | 3 | 4) => {
   const numbers = {
     1: "jedno pytanie",
@@ -23,7 +31,7 @@ const createPrompt = ({
   return `
   Wygeneruj quiz w formacie JSON na podstawie tekstu, który ma dokładnie ${convertNumberToText(
     numberOfQuestions
-  )} i każde ma po 4 odpowiedzi. Na końcu każdego pytania wypisz poprawną odpowiedź.
+  )} i każde ma po 4 odpowiedzi. Na końcu każdego pytania wypisz poprawną odpowiedź. Bądź bardzo kreatywny.
   ---
   { "questions": [{
   "question": "Pytanie",
@@ -65,8 +73,8 @@ export const getQuestions = async ({
     }),
     suffix: "}",
     stop: "---",
-    temperature: 0.1,
-    top_p: 0.1,
+    temperature: 0.2,
+    frequency_penalty: 0.6,
     max_tokens: baseText.length * 2 < 2048 ? baseText.length * 2 : 2560,
   });
 
@@ -82,7 +90,7 @@ export const getQuestions = async ({
       )
     ) as QuizData;
 
-    return choice;
+    return omitInvalidQuestions(choice);
   } catch {
     try {
       const choice = JSON.parse(
@@ -95,7 +103,7 @@ export const getQuestions = async ({
         )
       ) as QuizData;
 
-      return choice;
+      return omitInvalidQuestions(choice);
     } catch {
       console.log("ERROR");
       console.log(completion.data);
