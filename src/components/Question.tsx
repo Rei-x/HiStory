@@ -40,7 +40,7 @@ export const Question = ({
             <HStack mt={2} ml={4} key={answer}>
               <Radio value={answer} />
               <Input
-                name={`questions[${questionNumber}].answer[${index}]`}
+                name={`questions[${questionNumber}].answers[${index}]`}
                 variant="outline"
                 defaultValue={answer}
               />
