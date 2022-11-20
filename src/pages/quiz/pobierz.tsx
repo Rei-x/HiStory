@@ -19,7 +19,7 @@ const QuizPDF = ({ quiz }: { quiz: QuizData }) => {
   const styles = StyleSheet.create({
     page: {
       flexDirection: "row",
-      backgroundColor: "#E4E4E4",
+      backgroundColor: "#fff",
     },
     section: {
       fontFamily: "OpenSans",
