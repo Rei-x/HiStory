@@ -1,4 +1,4 @@
-import { Button, Heading, Link, Stack, Text } from "@chakra-ui/react";
+import { Button, Heading, HStack, Link, Stack, Text } from "@chakra-ui/react";
 import { saveAs } from "file-saver";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -23,6 +23,8 @@ import {
   TextRun,
 } from "docx";
 import { QuizData } from "../../types/quizData";
+import { deleteQuiz } from "../../api/deleteQuiz";
+import { useQueryClient } from "react-query";
 
 const QuizPDF = ({ quiz }: { quiz: QuizData }) => {
   const styles = StyleSheet.create({
@@ -115,6 +117,7 @@ const generateDocxQuiz = (quiz: QuizData) => {
 const Pobierz = () => {
   const router = useRouter();
   const { data } = useQuiz();
+  const client = useQueryClient();
   const quizId = router.query.quizId as string;
 
   const quiz = data?.quizes.find((q) => q.id === quizId);
@@ -142,7 +145,21 @@ const Pobierz = () => {
   return (
     <Layout>
       <Stack spacing={8}>
-        <Heading>{quiz?.title}</Heading>
+        <HStack>
+          <Heading>{quiz?.title}</Heading>
+          <Button
+            w="100px"
+            mb={6}
+            variant="ghost"
+            onClick={async () => {
+              await deleteQuiz(quiz.id);
+              client.refetchQueries("quizes");
+              router.push("/topics");
+            }}
+          >
+            usuń
+          </Button>
+        </HStack>
         {quiz?.resourceUrl ? (
           <Link
             target="_blank"
