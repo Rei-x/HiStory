@@ -59,7 +59,7 @@ const Quiz = () => {
           e.preventDefault();
           const questions = {};
 
-          Object.values((e.target as any).elements).forEach((element) => {
+          Object.values((e.target as any).elements).forEach((element: any) => {
             if (element.name === "") {
               return;
             }
@@ -84,7 +84,12 @@ const Quiz = () => {
                 description: "Udało się zapisać quiz!",
               });
 
-              router.push("/topics");
+              router.push({
+                pathname: "/quiz/pobierz",
+                query: {
+                  
+                }
+              });
             })
             .catch(() => {
               toast({

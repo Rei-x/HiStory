@@ -1,8 +1,10 @@
 import {
+  Box,
   Button,
   Container,
   FormLabel,
   Heading,
+  HStack,
   Input,
   Modal,
   ModalBody,
@@ -11,6 +13,11 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Skeleton,
+  SkeletonText,
+  Spinner,
+  Stack,
+  Text,
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
@@ -93,7 +100,7 @@ const Quiz = () => {
             }}
           />
         </FormLabel>
-        <VStack>
+        <VStack mt="4">
           {searchQuery?.data?.results
             ? searchQuery.data.results.map((resource) => (
                 <IPNResource
@@ -119,6 +126,17 @@ const Quiz = () => {
                 />
               ))
             : null}
+          {searchQuery.data?.resultsCount === 0 ? (
+            <Text>Brak wyników :(</Text>
+          ) : null}
+          {searchQuery.isLoading ? (
+            <Box w="100%">
+              <SkeletonText mt="4" noOfLines={4} spacing="4" />
+              <SkeletonText mt="12" noOfLines={4} spacing="4" />
+              <SkeletonText mt="12" noOfLines={4} spacing="4" />
+              <SkeletonText mt="12" noOfLines={4} spacing="4" />
+            </Box>
+          ) : null}
         </VStack>
       </Container>
     </Layout>

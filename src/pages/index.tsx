@@ -1,9 +1,20 @@
 import Head from "next/head";
-import { Input, Flex, Stack, Text, Image, Link } from "@chakra-ui/react";
+import {
+  Input,
+  Flex,
+  Stack,
+  Text,
+  Image,
+  Link,
+  Button,
+} from "@chakra-ui/react";
 import NextLink from "next/link";
 import { Layout } from "../components/Layout";
+import { useRouter } from "next/router";
 
 function Login() {
+  const router = useRouter();
+
   return (
     <>
       <Head>
@@ -27,11 +38,15 @@ function Login() {
         <Flex justifyContent="space-between">
           <Stack spacing="10px">
             <Input placeholder="login" />
-            <Input placeholder="hasło" />
+            <Input placeholder="hasło" type="password" />
 
-            <Link as={NextLink} href="/topics">
+            <Button
+              onClick={() => {
+                router.push("/topics");
+              }}
+            >
               zaloguj
-            </Link>
+            </Button>
           </Stack>
           <Flex
             w="300px"

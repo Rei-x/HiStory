@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { Layout } from "../../components/Layout";
 
 const TopicFormView = () => {
   const [title, setTitle] = useState("");
@@ -30,7 +31,7 @@ const TopicFormView = () => {
   };
 
   return (
-    <Stack spacing={4} maxW="400px" m={4}>
+    <Layout>
       <Heading>Dodaj nowy temat</Heading>
       <FormControl>
         <FormLabel>Nazwa tematu</FormLabel>
@@ -49,7 +50,7 @@ const TopicFormView = () => {
       <Button onClick={() => submitTopic({ title, historicalPeriod })}>
         Dodaj
       </Button>
-    </Stack>
+    </Layout>
   );
 };
 export default TopicFormView;

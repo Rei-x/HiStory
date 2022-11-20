@@ -3,6 +3,7 @@ import { TopicAccordion } from "../../components/Topic";
 import { useTopics } from "../../hooks/useTopics";
 import NextLink from "next/link";
 import { useState } from "react";
+import { Layout } from "../../components/Layout";
 
 const Header = ({
   filter,
@@ -12,7 +13,7 @@ const Header = ({
   onChange: (x: string) => void;
 }) => {
   return (
-    <Flex mt="64px" alignItems="center" justifyContent="space-between">
+    <Flex mt="64px" mb={4} alignItems="center" justifyContent="space-between">
       <Text fontSize="30px" fontWeight="800">
         Tematy
       </Text>
@@ -47,10 +48,10 @@ const Body = ({ filter }: { filter: string }) => {
 const Topics = () => {
   const [filter, setFilter] = useState("");
   return (
-    <Stack mx="128px" spacing={8}>
+    <Layout>
       <Header filter={filter} onChange={(text) => setFilter(text)} />
       <Body filter={filter} />
-    </Stack>
+    </Layout>
   );
 };
 export default Topics;
