@@ -8,6 +8,7 @@ import {
   FormLabel,
   Heading,
   Input,
+  Link,
   List,
   ListItem,
   OrderedList,
@@ -56,6 +57,9 @@ const Quiz = () => {
           }}
         />
       </FormControl>
+      <Link mt={2} color="gray" href={query.url as string}>
+        {query.url}
+      </Link>
       <form
         onSubmit={async (e) => {
           e.preventDefault();
