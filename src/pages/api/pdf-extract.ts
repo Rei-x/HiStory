@@ -28,6 +28,10 @@ export default async function handler(
   const url = (req.query.url ??
     "https://hackyeah.pl/wp-content/uploads/2022/11/Regulamin-Konkursu-2022AP-en.pdf") as string;
   const path = `/tmp/history/document.pdf`;
+  if (!fs.existsSync("/tmp/history")) {
+    fs.mkdirSync("/tmp/history");
+  }
+
   const fileStream = fs.createWriteStream(path);
   const response = await fetch(url);
   const responseStream = responseToReadable(response);

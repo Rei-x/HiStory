@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Center,
   Code,
@@ -10,6 +11,7 @@ import {
   List,
   ListItem,
   OrderedList,
+  SkeletonText,
   useToast,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
@@ -87,8 +89,8 @@ const Quiz = () => {
               router.push({
                 pathname: "/quiz/pobierz",
                 query: {
-                  quizId: await quizId.text()
-                }
+                  quizId: await quizId.text(),
+                },
               });
             })
             .catch(() => {
@@ -117,6 +119,14 @@ const Quiz = () => {
             Zapisz quiz
           </Button>
         </Center>
+        {loading ? (
+          <Box w="100%">
+            <SkeletonText mt="4" noOfLines={4} spacing="4" />
+            <SkeletonText mt="12" noOfLines={4} spacing="4" />
+            <SkeletonText mt="12" noOfLines={4} spacing="4" />
+            <SkeletonText mt="12" noOfLines={4} spacing="4" />
+          </Box>
+        ) : null}
       </form>
     </Layout>
   );

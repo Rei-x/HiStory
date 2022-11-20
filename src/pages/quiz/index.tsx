@@ -124,8 +124,13 @@ const Quiz = () => {
                 />
               ))
             : null}
-          {searchQuery.data?.resultsCount === 0 ? (
+          {searchQuery.data?.resultsCount === 0 &&
+          debouncedSearchText !== "" ? (
             <Text>Brak wyników :(</Text>
+          ) : null}
+          {searchQuery.data?.resultsCount === 0 &&
+          debouncedSearchText === "" ? (
+            <Text>Wpisz coś w wyszukiwarkę, żeby zobaczyć źródła!</Text>
           ) : null}
           {searchQuery.isLoading ? (
             <Box w="100%">

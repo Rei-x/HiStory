@@ -70,29 +70,36 @@ export const getQuestions = async ({
     max_tokens: baseText.length * 2 < 2048 ? baseText.length * 2 : 2560,
   });
 
-  console.log(
-    "{" +
-      completion.data.choices[0].text
-        ?.replaceAll("\n", "")
-        .replaceAll("\t", "") +
-      "}"
-  );
-
   try {
     const choice = JSON.parse(
       fixJSON(
         "{" +
           completion.data.choices[0].text
             ?.replaceAll("\n", "")
-            .replaceAll("\t", "") +
+            .replaceAll("\t", "")
+            .replaceAll('\\"', '"') +
           "}"
       )
     ) as QuizData;
 
-    console.log(choice);
-
     return choice;
   } catch {
-    return undefined;
+    try {
+      const choice = JSON.parse(
+        fixJSON(
+          "{" +
+            completion.data.choices[0].text
+              ?.replaceAll("\n", "")
+              .replaceAll("\t", "")
+              .replaceAll('\\"', '"')
+        )
+      ) as QuizData;
+
+      return choice;
+    } catch {
+      console.log("ERROR");
+      console.log(completion.data);
+      return undefined;
+    }
   }
 };
