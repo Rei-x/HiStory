@@ -96,9 +96,10 @@ const Quiz = () => {
           const questions = {} as any;
 
           Object.values((e.target as any).elements).forEach((element: any) => {
-            if (element.name === "") {
+            if (element.name === "" || typeof element.name === "undefined") {
               return;
             }
+
             if (element.name.includes("correctAnswer")) {
               if (element.checked) {
                 set(questions, element.name, element.value);
