@@ -1,4 +1,12 @@
-import { Button, Heading, HStack, Link, Stack, Text } from "@chakra-ui/react";
+import {
+  Button,
+  Heading,
+  HStack,
+  Link,
+  Stack,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
 import { saveAs } from "file-saver";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -118,6 +126,7 @@ const Pobierz = () => {
   const router = useRouter();
   const { data } = useQuiz();
   const client = useQueryClient();
+  const toast = useToast();
   const quizId = router.query.quizId as string;
 
   const quiz = data?.quizes.find((q) => q.id === quizId);
@@ -153,6 +162,10 @@ const Pobierz = () => {
             variant="ghost"
             onClick={async () => {
               await deleteQuiz(quiz.id);
+              toast({
+                title: "Pomyślnie usunięto quiz",
+                status: "success",
+              });
               client.refetchQueries("quizes");
               router.push("/topics");
             }}

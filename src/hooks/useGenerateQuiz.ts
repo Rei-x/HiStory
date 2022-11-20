@@ -1,3 +1,5 @@
+import { useToast } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { QuizData } from "../types/quizData";
 
@@ -9,7 +11,9 @@ export const useGenerateQuiz = ({
   numberOfQuestions: number;
 }) => {
   const [data, setData] = useState<QuizData | undefined>(undefined);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const toast = useToast();
+  const router = useRouter();
 
   const fetchData = async () => {
     setLoading(true);
@@ -24,7 +28,19 @@ export const useGenerateQuiz = ({
       },
     });
     setLoading(false);
-    setData(await data.json());
+
+    const parsedData = await data.json();
+    if (data.status !== 200) {
+      toast({
+        title: "Błąd",
+        description: parsedData.error,
+        status: "error",
+      });
+      router.back();
+      return;
+    }
+
+    setData(parsedData);
   };
 
   return { data, fetchData, loading };

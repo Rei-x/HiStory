@@ -1,13 +1,9 @@
 import {
   HStack,
   Input,
-  List,
-  ListItem,
   Radio,
   RadioGroup,
   Stack,
-  Text,
-  UnorderedList,
   VStack,
 } from "@chakra-ui/react";
 import React from "react";
@@ -33,6 +29,7 @@ export const Question = ({
       />
       <VStack rowGap={4} spacing={4} alignItems="flex-start">
         <RadioGroup
+          w="100%"
           defaultValue={correctAnswer}
           name={`questions[${questionNumber}].correctAnswer`}
         >
@@ -41,7 +38,7 @@ export const Question = ({
               <Radio value={answer} />
               <Input
                 minW="400px"
-                w="auto"
+                w="100%"
                 name={`questions[${questionNumber}].answers[${index}]`}
                 variant="outline"
                 defaultValue={answer}

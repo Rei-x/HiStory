@@ -14,9 +14,12 @@ import {
   OrderedList,
   Select,
   SkeletonText,
+  Text,
   useToast,
+  VStack,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import NextLink from "next/link";
 import React, { useEffect, useState } from "react";
 import { Layout } from "../../components/Layout";
 import { Question } from "../../components/Question";
@@ -28,6 +31,7 @@ import { addQuiz } from "../../api/addQuiz";
 const Quiz = () => {
   const { query, ...router } = useRouter();
   const baseText = useTextFromResource(query.url as string);
+  const [isLoading, setIsLoading] = useState(false);
   const { fetchData, data, loading } = useGenerateQuiz({
     baseText: baseText.data?.data ?? "",
     numberOfQuestions:
@@ -37,8 +41,10 @@ const Quiz = () => {
   useEffect(() => {
     if (
       typeof baseText.data?.data === "string" &&
-      typeof query.numberOfQuestions === "string"
+      typeof query.numberOfQuestions === "string" &&
+      isLoading === false
     ) {
+      setIsLoading(true);
       fetchData();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -137,6 +143,40 @@ const Quiz = () => {
         }}
       >
         <OrderedList mt={4} spacing={4}>
+          {data?.questions.length === 0 ? (
+            <VStack textAlign={"center"}>
+              <Text textAlign="center">
+                Niestety na podstawie tego zasobu nie udało się wygenerować
+                pytań, spróbuj ponownie z innym!
+              </Text>
+              <Link
+                textAlign="center"
+                color="gray"
+                as={NextLink}
+                href={`/quiz?topicId=${query.topicId}`}
+              >
+                wróc do wybierania tekstu
+              </Link>
+            </VStack>
+          ) : null}
+          {data?.questions &&
+          ((data?.questions.length <
+            parseInt(query.numberOfQuestions as string)) as any as 1) ? (
+            <VStack textAlign={"center"}>
+              <Text textAlign="center">
+                Nie udało się wygenerować wszystkich pytań, możesz spróbować z
+                innym zasobem.
+              </Text>
+              <Link
+                textAlign="center"
+                color="gray"
+                as={NextLink}
+                href={`/quiz?topicId=${query.topicId}`}
+              >
+                wróc do wybierania tekstu
+              </Link>
+            </VStack>
+          ) : null}
           {data?.questions?.map((question, index) => (
             <ListItem key={question.question}>
               <Question
@@ -148,11 +188,6 @@ const Quiz = () => {
             </ListItem>
           ))}
         </OrderedList>
-        <Center>
-          <Button mx="auto" mt={4} type="submit">
-            Zapisz quiz
-          </Button>
-        </Center>
         {loading ? (
           <Box w="100%">
             <SkeletonText mt="4" noOfLines={4} spacing="4" />
@@ -160,6 +195,22 @@ const Quiz = () => {
             <SkeletonText mt="12" noOfLines={4} spacing="4" />
             <SkeletonText mt="12" noOfLines={4} spacing="4" />
           </Box>
+        ) : data?.questions && data?.questions.length !== 0 ? (
+          <Center>
+            <Button
+              variant="outline"
+              mt={4}
+              mr={3}
+              onClick={() => {
+                router.reload();
+              }}
+            >
+              Wygeneruj ponownie
+            </Button>
+            <Button mt={4} type="submit">
+              Zapisz quiz
+            </Button>
+          </Center>
         ) : null}
       </form>
     </Layout>
