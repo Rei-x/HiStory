@@ -1,10 +1,10 @@
 import {
+  Box,
   Button,
   FormControl,
   FormLabel,
   Heading,
   Input,
-  Stack,
   useToast,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
@@ -33,23 +33,25 @@ const TopicFormView = () => {
   return (
     <Layout>
       <Heading>Dodaj nowy temat</Heading>
-      <FormControl>
-        <FormLabel>Nazwa tematu</FormLabel>
-        <Input
-          value={title}
-          onChange={({ target }) => setTitle(target.value)}
-        />
-      </FormControl>
-      <FormControl>
-        <FormLabel>Okres historyczny tematu</FormLabel>
-        <Input
-          value={historicalPeriod}
-          onChange={({ target }) => setHistoricalPeriod(target.value)}
-        />
-      </FormControl>
-      <Button onClick={() => submitTopic({ title, historicalPeriod })}>
-        Dodaj
-      </Button>
+      <Box maxW="lg">
+        <FormControl mt={3}>
+          <FormLabel>Nazwa tematu</FormLabel>
+          <Input
+            value={title}
+            onChange={({ target }) => setTitle(target.value)}
+          />
+        </FormControl>
+        <FormControl mt={3}>
+          <FormLabel>Okres historyczny tematu</FormLabel>
+          <Input
+            value={historicalPeriod}
+            onChange={({ target }) => setHistoricalPeriod(target.value)}
+          />
+        </FormControl>
+        <Button mt={4} onClick={() => submitTopic({ title, historicalPeriod })}>
+          Dodaj
+        </Button>
+      </Box>
     </Layout>
   );
 };

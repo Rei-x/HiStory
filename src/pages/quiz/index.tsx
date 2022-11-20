@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Center,
   Container,
   FormLabel,
   Heading,
@@ -14,6 +15,7 @@ import {
   ModalHeader,
   ModalOverlay,
   SkeletonText,
+  Spinner,
   Switch,
   Text,
   Tooltip,
@@ -42,7 +44,23 @@ viewer?embedded=true&url=${url}`}
     );
   }
 
-  return <Text whiteSpace="pre-line">{`${text}` ?? ""}</Text>;
+  if (typeof text === "undefined") {
+    return (
+      <Center>
+        <Spinner />
+      </Center>
+    );
+  }
+
+  if (text === "") {
+    return (
+      <Text textAlign={"center"} color="red">
+        Brak tekstu na stronie
+      </Text>
+    );
+  }
+
+  return <Text whiteSpace="pre-line">{`${text ?? ""}`}</Text>;
 };
 
 const Quiz = () => {
@@ -73,7 +91,7 @@ const Quiz = () => {
           <ModalHeader>{searchText}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Box shadow="md" maxH="700px" overflowY="scroll">
+            <Box shadow="md" h="700px" overflowY="scroll">
               <Preview text={baseText.data?.data} url={resourceUrl} />
             </Box>
           </ModalBody>
