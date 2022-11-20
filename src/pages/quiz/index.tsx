@@ -24,6 +24,7 @@ import { Layout } from "../../components/Layout";
 import { useSearch } from "../../hooks/useSearch";
 import { useTextFromResource } from "../../hooks/useTextFromResource";
 import { useTopics } from "../../hooks/useTopics";
+import { useDebounce } from "use-debounce";
 
 const Quiz = () => {
   const router = useRouter();
@@ -31,6 +32,7 @@ const Quiz = () => {
   const { data } = useTopics();
   const topic = data?.topics.find((i) => i.id === topicId);
   const [searchText, setSearchText] = useState("");
+  const [debouncedSearchText] = useDebounce(searchText, 500);
 
   useEffect(() => {
     if (topicId && topic) {
@@ -38,7 +40,7 @@ const Quiz = () => {
     }
   }, [topicId, topic]);
 
-  const searchQuery = useSearch(searchText);
+  const searchQuery = useSearch(debouncedSearchText);
   const [numberOfQuestions, setNumberOfQuestions] = useState(1);
   const [resourceUrl, setResourceUrl] = useState("");
   const baseText = useTextFromResource(resourceUrl);
