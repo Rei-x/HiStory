@@ -4,7 +4,6 @@ import {
   Container,
   FormLabel,
   Heading,
-  HStack,
   Input,
   Modal,
   ModalBody,
@@ -13,10 +12,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Skeleton,
   SkeletonText,
-  Spinner,
-  Stack,
   Text,
   useDisclosure,
   VStack,
@@ -53,7 +49,7 @@ const Quiz = () => {
       <Modal size="xl" isOpen={modal.isOpen} onClose={modal.onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{topic?.title ?? ""}</ModalHeader>
+          <ModalHeader>{searchText}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>{baseText.data?.data}</ModalBody>
           <ModalFooter>
