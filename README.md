@@ -8,6 +8,9 @@ HiStory is a web application that allows you to easily generate quizzes (using a
 
 This app won second place in the quiz generator category at Hackyeah 2022
 
+Presentation of the product:
+https://www.canva.com/design/DAFSZ0oMjxg/loEnpZpBDWJbTfxvVTcUqw/view
+
 ## How to run it?
 
 1. Create .env.local file based on .env.example and your OpenAI api token.
