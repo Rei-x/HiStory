@@ -13,6 +13,6 @@ https://www.canva.com/design/DAFSZ0oMjxg/loEnpZpBDWJbTfxvVTcUqw/view
 
 ## How to run it?
 
-1. Create .env.local file based on .env.example and your OpenAI api token.
+1. Create .env.local file based on .env.example and add your OpenAI api token.
 2. `pnpm i`
 3. `pnpm dev`
